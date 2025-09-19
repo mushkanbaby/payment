@@ -135,11 +135,11 @@
   const bookNowBtn = document.getElementById("bookNowBtn");
   bookNowBtn.addEventListener("click", ()=>{
     transactionFailed=true;
-    document.getElementById("videoPopup").style.display='none'; // popup stays open, no close
+    document.getElementById("videoPopup").style.display='flex'; // popup stays open, no close
   });
   window.addEventListener('focus',()=>{
     if(transactionFailed){
-      document.getElementById("failedPopup").style.display='flex';
+      document.getElementById("failedPopup").style.display='none';
       transactionFailed=false;
     }
   });

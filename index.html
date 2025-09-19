@@ -17,96 +17,57 @@
     font-family: 'Poppins', sans-serif;
     overflow-x: hidden;
   }
-  @keyframes gradientBG {
-    0% {background-position:0% 50%;}
-    50% {background-position:100% 50%;}
-    100% {background-position:0% 50%;}
-  }
+  @keyframes gradientBG { 0% {background-position:0% 50%;} 50% {background-position:100% 50%;} 100% {background-position:0% 50%;} }
 
-  /* Popup Common */
-  .popup {
-    display: flex;
-    position: fixed; z-index: 999;
-    left: 0; top: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.85);
-    align-items: center; justify-content: center;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-  }
-  .popup.show {
-    opacity: 1;
-    pointer-events: all;
-  }
-  .popup-content {
-    background: #111; color: #fff;
-    padding: 25px; border-radius: 20px;
-    width: 270px; text-align: center;
-    box-shadow: 0 0 30px cyan; position: relative;
-    transform: scale(0.8);
-    transition: transform 0.3s ease;
-  }
-  .popup.show .popup-content {
-    transform: scale(1);
-  }
-  .close { position: absolute; top: 12px; right: 15px; cursor: pointer; font-size: 20px; }
+  .popup { display: flex; position: fixed; z-index: 999; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); align-items: center; justify-content: center; opacity: 1; }
+  .popup-content { background: #111; color: #fff; padding: 25px; border-radius: 20px; width: 300px; text-align: center; box-shadow: 0 0 30px cyan; }
 
   .timer { margin: 12px 0; color: #00ff6a; font-weight: bold; font-size: 16px; }
 
-  /* Plans */
   .plans { display: flex; gap: 12px; margin: 18px 0; justify-content: center; }
-  .plan-card {
-    flex: 1; background: rgba(255,255,255,0.05);
-    border: 1px solid cyan; border-radius: 12px;
-    padding: 12px; cursor: pointer; transition: 0.3s;
-  }
+  .plan-card { flex: 1; background: rgba(255,255,255,0.05); border: 1px solid cyan; border-radius: 12px; padding: 12px; cursor: pointer; position: relative; }
   .plan-card:hover { box-shadow: 0 0 20px cyan; }
   .plan-card input { display: none; }
-  .plan-card label { display: block; cursor: pointer; }
+  .plan-card label { display: block; cursor: pointer; position: relative; }
+
+  .original-price { color: #fff; position: relative; display: inline-block; margin-bottom: 4px; }
+  .original-price::after { content: ''; position: absolute; left: 0; top: 50%; width: 70%; height: 2px; background: red; animation: strikeBackForth 1s ease-in-out infinite alternate; }
+  @keyframes strikeBackForth { 0% { left: 0; } 100% { left: 50%; } }
 
   .offer { color: #00ffea; font-weight: bold; }
-
-  .upi-info {
-    background: rgba(0,255,255,0.05); border: 1px dashed cyan;
-    padding: 12px; margin-bottom: 14px; border-radius: 10px;
-    font-size: 14px;
-  }
+  .upi-info { background: rgba(0,255,255,0.05); border: 1px dashed cyan; padding: 12px; margin-bottom: 14px; border-radius: 10px; font-size: 14px; }
   .upi-info code { background: #111; padding: 3px 6px; border-radius: 6px; }
-
-  .buy-btn {
-    display: inline-block; padding: 12px 18px;
-    background: cyan; color: #111;
-    border-radius: 10px; font-weight: bold; text-decoration: none;
-    transition: 0.3s;
-  }
+  .buy-btn { display: inline-block; padding: 12px 18px; background: cyan; color: #111; border-radius: 10px; font-weight: bold; text-decoration: none; transition: 0.3s; }
   .buy-btn:hover { background: #00ff6a; }
-
-  /* Failed Popup */
   .failed { color: #f87171; font-weight: bold; font-size: 18px; margin-top: 10px; }
+  .hotText { transform-origin: center; animation: pulse 1s infinite alternate; font-weight: bold; }
+  @keyframes pulse { 0% { transform: scale(1); fill: orange; } 50% { transform: scale(1.2); fill: red; } 100% { transform: scale(1); fill: orange; } }
 </style>
 </head>
 <body>
 
-<!-- Main Payment Popup -->
-<div id="videoPopup" class="popup show">
+<div id="videoPopup" class="popup">
   <div class="popup-content">
-    <span class="close" onclick="closePopup()">&times;</span>
     <h2>🎥 Video Call Service</h2>
     <div class="timer">⏳ Offer Ends In: <span id="countdown">30:00</span></div>
 
     <div class="plans">
       <div class="plan-card">
-        <input type="radio" name="plan" value="200" id="plan200" checked>
+        <input type="radio" name="plan" value="200" id="plan200">
         <label for="plan200">
           <h3>15 Minutes</h3>
-          <p><del>₹400</del> <span class="offer">₹200</span></p>
+          <div><span class="original-price" id="orig200">₹400</span> <span class="offer" id="offer200">₹200</span></div>
         </label>
       </div>
+
       <div class="plan-card">
         <input type="radio" name="plan" value="300" id="plan300">
         <label for="plan300">
+          <svg viewBox="0 0 64 64" width="40" height="40" style="position: absolute; top: -20px; right: -10px; z-index: 10;">
+            <text x="50%" y="20%" text-anchor="middle" class="hotText" dy=".35em">🔥 HOT</text>
+          </svg>
           <h3>30 Minutes</h3>
-          <p><del>₹600</del> <span class="offer">₹300</span></p>
+          <div><span class="original-price" id="orig300">₹600</span> <span class="offer" id="offer300">₹300</span></div>
         </label>
       </div>
     </div>
@@ -121,73 +82,67 @@
   </div>
 </div>
 
-<!-- Transaction Failed Popup -->
-<div id="failedPopup" class="popup">
+<div id="failedPopup" class="popup" style="display:none;">
   <div class="popup-content">
-    <span class="close" onclick="closeFailed()">&times;</span>
     <h2>Payment Status</h2>
     <p class="failed">❌ Transaction Failed</p>
   </div>
 </div>
 
 <script>
-  const bookNowBtn = document.getElementById("bookNowBtn");
-  const failedPopup = document.getElementById("failedPopup");
-  const videoPopup = document.getElementById("videoPopup");
-  const countdownEl = document.getElementById("countdown");
+  let plans = JSON.parse(localStorage.getItem('plans')) || {
+    plan200: {original:200, offer:99},
+    plan300: {original:400, offer:149}
+  };
 
-  let countdownInterval;
-  let transactionFailed = false; // flag for failed transaction
+  const updateUI = ()=>{
+    document.getElementById("orig200").textContent = `₹${plans.plan200.original}`;
+    document.getElementById("offer200").textContent = `₹${plans.plan200.offer}`;
+    document.getElementById("orig300").textContent = `₹${plans.plan300.original}`;
+    document.getElementById("offer300").textContent = `₹${plans.plan300.offer}`;
 
-  // Close popup and go back
-  function closePopup(){ 
-    videoPopup.classList.remove("show"); 
-    history.back(); // go to previous page
+    const selectedPlan = document.querySelector("input[name='plan']:checked")?.id || 'plan200';
+    document.getElementById("bookNowBtn").textContent = `Pay ₹${plans[selectedPlan].offer}`;
+    document.getElementById("bookNowBtn").href = `upi://pay?pa=mushkanbabu@ybl&pn=Mushkan&am=${plans[selectedPlan].offer}&cu=INR`;
+  };
+
+  if(!document.querySelector("input[name='plan']:checked")){
+    document.getElementById("plan200").checked = true;
   }
-  function closeFailed(){ 
-    failedPopup.classList.remove("show"); 
-    history.back(); // go to previous page
-  }
+  updateUI();
 
-  // Countdown Timer
-  function startCountdown(seconds) {
-    let remaining = seconds;
-    function update() {
-      let mins = Math.floor(remaining / 60);
-      let secs = remaining % 60;
-      countdownEl.textContent = `${mins}:${secs < 10 ? "0" : ""}${secs}`;
-      if(remaining > 0) remaining--;
-    }
-    update();
-    countdownInterval = setInterval(update, 1000);
-  }
-  startCountdown(30*60);
-
-  // Plan selection logic
-  document.querySelectorAll("input[name='plan']").forEach(radio => {
-    radio.addEventListener("change", function() {
-      let price = this.value;
-      let paymentLink = `upi://pay?pa=mushkanbabu@ybl&pn=Mushkan&am=${price}&cu=INR`;
-      bookNowBtn.href = paymentLink;
-      bookNowBtn.textContent = `Pay ₹${price}`;
+  document.querySelectorAll("input[name='plan']").forEach(radio=>{
+    radio.addEventListener("change", ()=>{
+      updateUI();
+      localStorage.setItem('selectedPlan', radio.id);
     });
   });
 
-  // Handle "Pay" click (simulate failed transaction)
-  bookNowBtn.addEventListener("click", function() {
-    transactionFailed = true;  // mark as failed
-    closePopup();               // close video popup
-    // UPI app opens automatically
-  });
+  const selectedPlan = localStorage.getItem('selectedPlan');
+  if(selectedPlan) document.getElementById(selectedPlan).checked = true;
+  updateUI();
 
-  // Show failed popup when user returns to page
-  window.addEventListener('focus', () => {
-    if(transactionFailed) {
-      failedPopup.classList.add("show");
-      transactionFailed = false;
+  const countdownEl = document.getElementById("countdown");
+  let remaining = 30*60;
+  const timer = setInterval(()=>{
+    let mins = Math.floor(remaining/60);
+    let secs = remaining%60;
+    countdownEl.textContent = `${mins}:${secs<10?'0':''}${secs}`;
+    if(remaining>0) remaining--;
+  },1000);
+
+  let transactionFailed=false;
+  const bookNowBtn = document.getElementById("bookNowBtn");
+  bookNowBtn.addEventListener("click", ()=>{
+    transactionFailed=true;
+    document.getElementById("videoPopup").style.display='flex'; // popup stays open, no close
+  });
+  window.addEventListener('focus',()=>{
+    if(transactionFailed){
+      document.getElementById("failedPopup").style.display='flex';
+      transactionFailed=false;
     }
   });
 </script>
-
 </body>
 </html>

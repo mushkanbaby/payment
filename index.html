@@ -53,21 +53,21 @@
 
     <div class="plans">
       <div class="plan-card">
-        <input type="radio" name="plan" value="200" id="plan200">
+        <input type="radio" name="plan" value="249" id="plan200">
         <label for="plan200">
           <h3>15 Minutes</h3>
-          <div><span class="original-price" id="orig200">₹400</span> <span class="offer" id="offer200">₹200</span></div>
+          <div><span class="original-price" id="orig200">₹500</span> <span class="offer" id="offer200">₹249</span></div>
         </label>
       </div>
 
       <div class="plan-card">
-        <input type="radio" name="plan" value="300" id="plan300">
+        <input type="radio" name="plan" value="399" id="plan300">
         <label for="plan300">
           <svg viewBox="0 0 64 64" width="40" height="40" style="position: absolute; top: -20px; right: -10px; z-index: 10;">
             <text x="50%" y="20%" text-anchor="middle" class="hotText" dy=".35em">🔥 HOT</text>
           </svg>
           <h3>30 Minutes</h3>
-          <div><span class="original-price" id="orig300">₹600</span> <span class="offer" id="offer300">₹300</span></div>
+          <div><span class="original-price" id="orig300">₹1000</span> <span class="offer" id="offer300">₹399</span></div>
         </label>
       </div>
     </div>
@@ -78,7 +78,7 @@
       <code>mushkanbabu@ybl</code>
     </div>
 
-    <a id="bookNowBtn" href="#" class="buy-btn">Pay ₹200</a>
+    <a id="bookNowBtn" href="#" class="buy-btn">Pay ₹249</a>
   </div>
 </div>
 
@@ -90,9 +90,10 @@
 </div>
 
 <script>
-  let plans = JSON.parse(localStorage.getItem('plans')) || {
-    plan200: {original:200, offer:99},
-    plan300: {original:400, offer:149}
+  // Updated prices
+  let plans = {
+    plan200: {original:500, offer:249},
+    plan300: {original:1000, offer:399}
   };
 
   const updateUI = ()=>{
@@ -135,7 +136,7 @@
   const bookNowBtn = document.getElementById("bookNowBtn");
   bookNowBtn.addEventListener("click", ()=>{
     transactionFailed=true;
-    document.getElementById("videoPopup").style.display='flex'; // popup stays open, no close
+    document.getElementById("videoPopup").style.display='flex';
   });
   window.addEventListener('focus',()=>{
     if(transactionFailed){
